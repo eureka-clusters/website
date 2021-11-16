@@ -37,8 +37,8 @@ services:
       - web
 
   portal:
-    image: ghcr.io/eureka-clusters/portal-backend/backend:main
-    container_name: backend
+    image: ghcr.io/eureka-clusters/pa-portal/pa-portal:migration-to-typescript
+    container_name: portal
     labels:
       - traefik.enable=true
       - traefik.http.services.portal.loadbalancer.server.port=80
