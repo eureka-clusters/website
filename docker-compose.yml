@@ -12,7 +12,6 @@ services:
       - --entryPoints.web.address=:80
       - --entryPoints.websecure.address=:443
       - --providers.docker
-      - --providers.docker.network=web
     networks:
       - internal
     ports:
@@ -30,7 +29,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.backend.loadbalancer.server.port=80
-      - traefik.http.routers.backend-https.service=web
+      - traefik.http.routers.backend-https.service=backend
       - traefik.http.routers.backend-https.rule=Host(`api.eurekaclusters.eu`)
       - traefik.http.routers.backend-https.entrypoints=websecure
     networks:
@@ -42,7 +41,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.portal.loadbalancer.server.port=80
-      - traefik.http.routers.portal-https.service=web
+      - traefik.http.routers.portal-https.service=portal
       - traefik.http.routers.portal-https.rule=Host(`eurekaclusters.eu`)
       - traefik.http.routers.portal-https.entrypoints=websecure
     networks:
