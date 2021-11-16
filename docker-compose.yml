@@ -12,6 +12,8 @@ services:
       - --entryPoints.web.address=:80
       - --entryPoints.websecure.address=:443
       - --providers.docker
+      - --providers.docker.network=internal
+      - --providers.docker.defaultRule=Host(`eurekaclusters.eu`)
     networks:
       - internal
     ports:
