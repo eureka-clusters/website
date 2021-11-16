@@ -23,6 +23,12 @@ Stop the running nginx
 service nginx stop
 ```
 
+Create a network
+
+```shell
+docker network create web
+```
+
 All next steps are done as root so we have full access to the /var/www
 
 Add the root id_rsa.pub to the github deploy keys of https://github.com/eureka-clusters/website
