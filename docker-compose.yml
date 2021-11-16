@@ -33,7 +33,7 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=80
       - traefik.http.routers.backend-https.service=backend
       - traefik.http.routers.backend-https.rule=Host(`api.eurekaclusters.eu`)
-      - traefik.http.routers.backend-https.entrypoints=https
+      - traefik.http.routers.backend-https.entrypoints=http
     networks:
       - web
 
@@ -45,7 +45,7 @@ services:
       - traefik.http.services.portal.loadbalancer.server.port=80
       - traefik.http.routers.portal-https.service=portal
       - traefik.http.routers.portal-https.rule=Host(`eurekaclusters.eu`)
-      - traefik.http.routers.portal-https.entrypoints=https
+      - traefik.http.routers.portal-https.entrypoints=http
     networks:
       - web
 
