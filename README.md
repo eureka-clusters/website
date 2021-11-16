@@ -17,6 +17,12 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.1.1/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
+Stop the running nginx
+
+```shell
+service nginx stop
+```
+
 All next steps are done as root so we have full access to the /var/www
 
 Add the root id_rsa.pub to the github deploy keys of https://github.com/eureka-clusters/website
