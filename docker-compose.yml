@@ -8,28 +8,29 @@ services:
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - --log.level=INFO
-      - --entryPoints.http.address=:80
-      - --entryPoints.https.address=:443
       - --providers.docker
       - --providers.docker.network=web
       - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
       - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=http
       - --certificatesresolvers.letsencrypt.acme.email=johan.van.der.heide@itea4.org
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
-    labels:
-      # Redirect all HTTP traffic to HTTPS
-      - traefik.http.routers.to-https.rule=HostRegexp(`{host:.+}`)
-      - traefik.http.routers.to-https.entrypoints=http
-      - traefik.http.routers.to-https.middlewares=to-https
+      - --entrypoints.http.address=:80
+      - --entrypoints.http.http.redirections.entrypoint.to=https
+      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+      - --entrypoints.https.address=:443
+      - --entrypoints.https.http.tls=true
+      - --entrypoints.https.http.tls.certResolver=letsencrypt
+      - --entrypoints.https.http.tls.domains[0].main=eurekaclusters.eu
+      - --entrypoints.https.http.tls.domains[0].sans=www.eurekaclusters.eu
+      - --entrypoints.https.http.tls.domains[1].main=api.eurekaclusters.eu
     networks:
       web: { }
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./data/letsencrypt:/letsencrypt
+      - certs:/letsencrypt
 
   backend:
     image: ghcr.io/eureka-clusters/portal-backend/backend:main
@@ -58,6 +59,9 @@ services:
       - traefik.http.routers.portal-https.certresolver=letsencrypt
     networks:
       - web
+
+volumes:
+  certs:
 
 networks:
   web:
