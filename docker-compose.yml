@@ -33,7 +33,7 @@ services:
       - certs:/letsencrypt
 
   backend:
-    image: ghcr.io/eureka-clusters/portal-backend/backend:main
+    image: ghcr.io/eureka-clusters/backend:latest
     container_name: backend
     labels:
       - traefik.enable=true
@@ -42,6 +42,9 @@ services:
       - traefik.http.routers.backend-https.rule=Host(`api.eurekaclusters.eu`)
       - traefik.http.routers.backend-https.entrypoints=https
       - traefik.http.routers.backend-https.tls=true
+    volumes:
+      - ./conf/doctrine_orm.global.php:/var/www/config/autoload/doctrine_orm.global.php
+      - ./conf/oauth2.services.global.php:/var/www/config/autoload/oauth2.services.global.php
     networks:
       - web
 
@@ -55,6 +58,11 @@ services:
       - traefik.http.routers.portal-https.rule=Host(`eurekaclusters.eu`)
       - traefik.http.routers.portal-https.entrypoints=https
       - traefik.http.routers.portal-https.tls=true
+    environment:
+      - REACT_APP_SERVER_URI=https://api.eurekaclusters.eu
+      - REACT_APP_CLIENT_ID=client_id
+      - REACT_APP_CLIENT_SECRET=secret
+      - REACT_APP_REDIRECT_URI=https://eurekaclusters.eu/callback
     networks:
       - web
 
