@@ -21,7 +21,6 @@ services:
       - --entrypoints.https.http.tls=true
       - --entrypoints.https.http.tls.certResolver=letsencrypt
       - --entrypoints.https.http.tls.domains[0].main=eurekaclusters.eu
-      - --entrypoints.https.http.tls.domains[0].sans=www.eurekaclusters.eu
       - --entrypoints.https.http.tls.domains[1].main=api.eurekaclusters.eu
     networks:
       web: { }
