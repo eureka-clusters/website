@@ -33,7 +33,7 @@ services:
       - certs:/letsencrypt
 
   webserver:
-    image: 'nginx:alpine'
+    image: ghcr.io/eureka-clusters/backend/webserver:latest
     container_name: webserver
     volumes:
       - './:/var/www'
@@ -49,9 +49,9 @@ services:
       - internal
       - web
 
-  api:
-    image: ghcr.io/eureka-clusters/backend:latest
-    container_name: api
+  app:
+    image: ghcr.io/eureka-clusters/backend/app:latest
+    container_name: app
     labels:
       - traefik.enable=false
     volumes:
