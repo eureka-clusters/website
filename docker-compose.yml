@@ -7,7 +7,7 @@ services:
     container_name: reverse-proxy
     # Enables the web UI and tells Traefik to listen to docker
     command:
-      - --log.level=INFO
+      - --log.level=DEBUG
       - --providers.docker
       - --providers.docker.network=web
       - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
@@ -32,16 +32,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - certs:/letsencrypt
 
-  api-webserver:
+  webserver:
     image: 'nginx:alpine'
-    container_name: api-webserver
+    container_name: webserver
     volumes:
       - './:/var/www'
-      - './.docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './.docker/nginx/conf.d:/etc/nginx/conf.d'
     labels:
       - traefik.enable=true
       - traefik.http.services.api-webserver.loadbalancer.server.port=80
-      - traefik.http.routers.api-webserver.service=api-webserver
+      - traefik.http.routers.api-webserver.service=webserver
       - traefik.http.routers.api-webserver.rule=Host(`api.eurekaclusters.eu`)
       - traefik.http.routers.api-webserver.entrypoints=https
       - traefik.http.routers.api-webserver.tls=true
@@ -49,9 +49,9 @@ services:
       - internal
       - web
 
-  api-app:
+  api:
     image: ghcr.io/eureka-clusters/backend:latest
-    container_name: api-app
+    container_name: api
     labels:
       - traefik.enable=false
     volumes:
@@ -59,7 +59,6 @@ services:
       - ./conf/oauth2.services.global.php:/var/www/config/autoload/oauth2.services.global.php
     networks:
       - internal
-      - web
 
   portal:
     image: ghcr.io/eureka-clusters/backend/production:latest
