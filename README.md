@@ -40,3 +40,50 @@ git clone git@github.com:eureka-clusters/website.git .
 
 docker-compose up 
 ```
+
+Create a database (mysql) as root
+
+```shell
+apt-get install mysql
+```
+
+Mysql is password less when logged in as root, so you can always use ```mysql``` as root to login
+
+Create a user
+
+```mysql
+CREATE USER 'portal_user'@'172.%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON `portal_database`.* TO 'portal_user'@'172.%';
+FLUSH PRIVILEGES;
+```
+
+Make sure that mysql is not bound to ```127.0.0.1``` only so comment ```bind_address=127.0.0.1``` in ```/etc/mysql/mysql.conf.d/mysqld.cnf```
+
+Update ```/var/www/portal/conf/doctrine_orm.global.php``` and ```/var/www/portal/conf/oauth2.services.global.php``` so all correct information is in
+
+doctrine_orm.global.php
+```php
+<?php use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
+
+return [
+    'doctrine' => [
+        'connection' => [
+            'orm_default' => [
+                'driverClass' => Driver::class,
+                'params'      => [
+                    'host'          => '172.17.0.1', #points to mysql database
+                    'port'          => '3306',
+                    'user'          => 'portal_user',
+                    'password'      => 'password',
+                    'dbname'        => 'portal_database',
+                    'driverOptions' => [
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
+                    ]
+                ],
+            ],
+        ],
+    ],
+];
+```
+
+

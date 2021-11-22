@@ -72,6 +72,14 @@ services:
     networks:
       - web
 
+  redis:
+    image: redis:latest
+    container_name: pa-portal-redis
+    labels:
+      - traefik.enable=false
+    networks:
+      - internal
+
 volumes:
   certs:
 
