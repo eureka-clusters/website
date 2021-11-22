@@ -37,7 +37,7 @@ services:
     container_name: api-webserver
     volumes:
       - './:/var/www'
-      - './.docker/nginx/conf.d/:/etc/nginx/conf.d/'
+      - './.docker/nginx:/etc/nginx/conf.d'
     labels:
       - traefik.enable=true
       - traefik.http.services.api-webserver.loadbalancer.server.port=80
