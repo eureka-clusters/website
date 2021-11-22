@@ -60,7 +60,7 @@ services:
       - internal
 
   portal:
-    image: ghcr.io/eureka-clusters/backend/production:latest
+    image: ghcr.io/eureka-clusters/frontend:latest
     container_name: portal
     labels:
       - traefik.enable=true
