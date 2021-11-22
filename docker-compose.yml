@@ -40,11 +40,11 @@ services:
       - './.docker/nginx/conf.d:/etc/nginx/conf.d'
     labels:
       - traefik.enable=true
-      - traefik.http.services.api-webserver.loadbalancer.server.port=80
-      - traefik.http.routers.api-webserver.service=webserver
-      - traefik.http.routers.api-webserver.rule=Host(`api.eurekaclusters.eu`)
-      - traefik.http.routers.api-webserver.entrypoints=https
-      - traefik.http.routers.api-webserver.tls=true
+      - traefik.http.services.webserver.loadbalancer.server.port=80
+      - traefik.http.routers.webserver.service=webserver
+      - traefik.http.routers.webserver.rule=Host(`api.eurekaclusters.eu`)
+      - traefik.http.routers.webserver.entrypoints=https
+      - traefik.http.routers.webserver.tls=true
     networks:
       - internal
       - web
