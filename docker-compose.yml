@@ -80,3 +80,5 @@ volumes:
 networks:
   web:
     external: true
+  internal:
+    external: false
