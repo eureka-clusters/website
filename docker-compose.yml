@@ -36,7 +36,6 @@ services:
     image: ghcr.io/eureka-clusters/backend/webserver:latest
     container_name: webserver
     volumes:
-      - './:/var/www'
       - './.docker/nginx/conf.d:/etc/nginx/conf.d'
     labels:
       - traefik.enable=true
