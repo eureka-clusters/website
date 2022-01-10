@@ -22,6 +22,7 @@ services:
       - --entrypoints.https.http.tls.certResolver=letsencrypt
       - --entrypoints.https.http.tls.domains[0].main=eurekaclusters.eu
       - --entrypoints.https.http.tls.domains[1].main=api.eurekaclusters.eu
+    restart: always
     networks:
       web: { }
     ports:
@@ -44,6 +45,7 @@ services:
       - traefik.http.routers.webserver.rule=Host(`api.eurekaclusters.eu`)
       - traefik.http.routers.webserver.entrypoints=https
       - traefik.http.routers.webserver.tls=true
+    restart: always
     networks:
       - internal
       - web
@@ -56,6 +58,7 @@ services:
     volumes:
       - ./conf/doctrine_orm.global.php:/var/www/config/autoload/doctrine_orm.global.php
       - ./conf/oauth2.services.global.php:/var/www/config/autoload/oauth2.services.global.php
+    restart: always
     networks:
       - internal
 
@@ -69,12 +72,14 @@ services:
       - traefik.http.routers.portal-https.rule=Host(`eurekaclusters.eu`)
       - traefik.http.routers.portal-https.entrypoints=https
       - traefik.http.routers.portal-https.tls=true
+    restart: always
     networks:
       - web
 
   redis:
     image: redis:latest
     container_name: pa-portal-redis
+    restart: always
     labels:
       - traefik.enable=false
     networks:

@@ -17,10 +17,11 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.1.1/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-Stop the running nginx
+Stop the running nginx, and disable autostart
 
 ```shell
 service nginx stop
+update-rc.d -f nginx disable
 ```
 
 Create a network
@@ -86,4 +87,29 @@ return [
 ];
 ```
 
+There are 3 images
 
+ * backend/webserver - Running the code for the backend PHP code, based on nginx
+ * backend/app - PHP code for the backend (api)
+ * frontend - Integrated React code wrapped in nginx container
+
+### SSH into redis container
+
+```shell
+docker-compose exec redis /bin/sh
+```
+
+### Schema update
+
+```shell
+docker-compose run --rm app /var/www/vendor/bin/doctrine-module orm:validate-schema
+docker-compose run --rm app /var/www/vendor/bin/doctrine-module orm:schema-tool:update --dump-sql
+
+```
+
+### Update docker containers
+```shell
+cd /var/www/portal
+docker-compose pull
+docker-compose up -d
+```
