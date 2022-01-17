@@ -4,7 +4,6 @@ services:
   reverse-proxy:
     # The official v2 Traefik docker image
     image: traefik:v2.5
-    container_name: reverse-proxy
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - --log.level=DEBUG
@@ -34,8 +33,7 @@ services:
       - certs:/letsencrypt
 
   webserver:
-    image: ghcr.io/eureka-clusters/backend/webserver:latest
-    container_name: webserver
+    image: ghcr.io/eureka-clusters/backend/nginx:latest
     volumes:
       - './.docker/nginx/conf.d:/etc/nginx/conf.d'
     labels:
@@ -52,7 +50,6 @@ services:
 
   app:
     image: ghcr.io/eureka-clusters/backend/app:latest
-    container_name: app
     labels:
       - traefik.enable=false
     volumes:
@@ -64,7 +61,6 @@ services:
 
   portal:
     image: ghcr.io/eureka-clusters/frontend:latest
-    container_name: portal
     labels:
       - traefik.enable=true
       - traefik.http.services.portal.loadbalancer.server.port=80
@@ -78,7 +74,6 @@ services:
 
   redis:
     image: redis:latest
-    container_name: pa-portal-redis
     restart: always
     labels:
       - traefik.enable=false
