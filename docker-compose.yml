@@ -3,7 +3,7 @@ version: '3.9'
 services:
   reverse-proxy:
     # The official v2 Traefik docker image
-    image: traefik:v2.5
+    image: traefik:latest
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - --log.level=DEBUG
